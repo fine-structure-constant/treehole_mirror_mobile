@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>树洞镜像 · 移动端设计</title>
+  <style>body{max-width:52rem;margin:3rem auto;padding:0 1.25rem;background:#f7f6f2;color:#172820;font:16px/1.65 system-ui,sans-serif}h2{margin-top:2rem}a{color:#27624b}table{width:100%;border-collapse:collapse}td,th{padding:.5rem;border-bottom:1px solid #d7dfd8;text-align:left;vertical-align:top}code{overflow-wrap:anywhere}figure{margin:1rem 0}img{display:block;max-width:min(100%,390px);height:auto;border:1px solid #d7dfd8;border-radius:14px}figcaption{margin-top:.5rem;color:#53615a}</style>
+</head>
+<body>
+  <h1>树洞镜像 · 移动端设计</h1>
+  <p>2026-11-24 · <code>mirror_mobile/main</code> · 首版工作区，尚无提交。</p>
+  <h2>设计准则</h2>
+  <p>沿用网页端熟悉的洞号、正文、标签、评论和关注入口。移动端用单栏信息流与独立详情页，保留返回位置，支持系统深色模式和扩大字号。</p>
+  <h2>需求与验收</h2>
+  <table><thead><tr><th>需求</th><th>验收</th><th>状态</th></tr></thead><tbody>
+    <tr><td>REQ-01 独立镜像源</td><td>预置同学部署的源，可填 API 根地址并切换，保存前测试。</td><td>requested</td></tr>
+    <tr><td>REQ-02 浏览与检索</td><td>列表、评论、洞号和关键词定位、来源支持的筛选、图片及只读信息。</td><td>requested</td></tr>
+    <tr><td>REQ-03 只读使用</td><td>浏览使用镜像 GET 接口。收藏和浏览历史由手机本地保存。</td><td>requested</td></tr>
+  </tbody></table>
+  <h2>实现选择</h2>
+  <p>DEC-01 · Kotlin 原生容器承载随 APK 分发的界面，原生 GET 传输处理镜像跨域。Android 是本次构建目标。</p>
+  <p>DEC-02 · 镜像兼容 API 优先提供帖子、评论与筛选。服务公布独立检索能力时，界面提供该能力。</p>
+  <h2>实现预览</h2>
+  <figure><img src="src/previews/feed.png" width="390" height="844" alt="树洞镜像的移动端信息流，含镜像入口、搜索、帖子、标签和评论预览。"><figcaption>Chromium 移动视口截图，使用合成数据。</figcaption></figure>
+  <h2>实现与验证</h2>
+  <table><thead><tr><th>需求</th><th>实现</th><th>验证</th></tr></thead><tbody>
+    <tr><td>REQ-01</td><td><a href="../app/src/main/assets/web/api.mjs">API 能力识别</a>与<a href="../app/src/main/java/cn/edu/pku/treehole/mirror/MirrorTransport.kt">原生只读传输</a></td><td>接口单元测试、Chromium 模拟 REST 源切换和重启后恢复。</td></tr>
+    <tr><td>REQ-02</td><td><a href="../app/src/main/assets/web/screens.mjs">阅读与检索页面</a></td><td>Chromium 交互测试覆盖列表、标签、评论分页、排序、引用、洞号定位、日期及缺图。预设源联调覆盖列表翻页、关键词、标签、详情、评论、消息及单日时间范围。</td></tr>
+    <tr><td>REQ-03</td><td><a href="../app/src/main/assets/web/storage.mjs">按源保存本地状态</a></td><td>Chromium 交互测试覆盖关注、分组、历史、深色模式和镜像隔离。</td></tr>
+  </tbody></table>
+  <p>Android 调试 APK 构建与 Lint 检查通过。APK v2 签名有效，包内界面文件与通过 Chromium 测试的源文件一致。</p>
+  <h2>待验证</h2>
+  <p>本机没有连接 Android 设备，系统分享、手势返回和 WebView 内的网络连接需要设备验证。</p>
+  <p>预设镜像的近期日期范围返回正常。一项截止于 2000 年的查询连续超时，客户端会显示请求失败并允许重试。</p>
+  <h2>变更记录</h2>
+  <p>2026-11-24 · 确定单栏阅读和镜像源配置。接入 V3 与可选 REST 能力并完成浏览器交互测试。</p>
+</body>
+</html>
